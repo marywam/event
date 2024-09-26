@@ -17,6 +17,12 @@ Before setting up the project, ensure you have the following installed on your m
        ![Screenshot from 2024-09-26 10-40-27](https://github.com/user-attachments/assets/e2218c91-994a-46cb-bfe4-761e4d4e27c4)
 
     (i)  Once you execute this command, you'll see output similar to the following, depending on your environment and whether you have Expo CLI installed:
+
+4. Navigate to the app
+   
+5. Start the Expo development server:
+
+   (i) After the installation is complete, run the following command to start the development server:
     
         
        
