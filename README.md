@@ -9,5 +9,6 @@ Before setting up the project, ensure you have the following installed on your m
 
 2. Expo CLI: If you haven't installed the Expo CLI, you   can do so globally by running:
 
-  npm install -g expo-cli
+  // npm install -g expo-cli
+  
 
