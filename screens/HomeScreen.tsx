@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons"; // Change to the icon set you're using
 import TopBar from "./TopBar";
+import BottomBar from "./BottomBar";
 
 // Importing images separately
 const musicFestivalImage = require("../assets/event 1.jpeg");
@@ -39,7 +40,6 @@ const eventsData = [
     location: "Seattle",
     image: techConferenceImage,
   },
-
   {
     id: 4,
     date: "20th Dec, 2024",
@@ -71,67 +71,81 @@ const Home: React.FC = () => {
   );
 
   return (
-    <View style={styles.containerevent}>
+    <View style={styles.container}>
       <TopBar />
-      <ScrollView style={styles.container}>
+      <View style={styles.scrollContainer}>
+
+        <View  style={styles.scrollText}>
         <Text style={styles.title}>Upcoming Events</Text>
-        <View style={styles.searchContainer}>
-          <Icon
-            name="search-outline"
-            size={25}
-            style={[styles.searchIcon, { color: 'grey' }]}
-          />
-          <TextInput
-            placeholder="Search events..."
-            value={searchTerm}
-            onChangeText={setSearchTerm}
-            style={styles.searchInput}
-            placeholderTextColor="grey"
-          />
+          <View style={styles.searchContainer}>
+            <Icon
+              name="search-outline"
+              size={25}
+              style={[styles.searchIcon, { color: 'grey' }]}
+            />
+            <TextInput
+              placeholder="Search events..."
+              value={searchTerm}
+              onChangeText={setSearchTerm}
+              style={styles.searchInput}
+              placeholderTextColor="grey"
+            />
+          </View>
         </View>
-        <View style={styles.eventList}>
-          {filteredEvents.map((event) => (
-            <View key={event.id} style={styles.eventCard}>
-              <Image
-                source={event.image}
-                style={styles.thumbnail}
-                accessibilityLabel={event.title}
-              />
-              <View style={styles.eventDetails}>
-                <Text style={styles.eventDate}>{event.date}</Text>
-                <Text style={styles.eventTitle}>{event.title}</Text>
-                <View style={styles.locationContainer}>
-                  <Icon name="location-outline" size={16} color="grey" />
-                  <Text style={styles.eventLocation}>{event.location}</Text>
+        <ScrollView contentContainerStyle={styles.scrollView}>
+         
+          <View style={styles.eventList}>
+            {filteredEvents.map((event) => (
+              <View key={event.id} style={styles.eventCard}>
+                <Image
+                  source={event.image}
+                  style={styles.thumbnail}
+                  accessibilityLabel={event.title}
+                />
+                <View style={styles.eventDetails}>
+                  <Text style={styles.eventDate}>{event.date}</Text>
+                  <Text style={styles.eventTitle}>{event.title}</Text>
+                  <View style={styles.locationContainer}>
+                    <Icon name="location-outline" size={16} color="grey" />
+                    <Text style={styles.eventLocation}>{event.location}</Text>
+                  </View>
                 </View>
+                <TouchableOpacity>
+                  <Text style={styles.moreDetails}>More</Text>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity>
-              <Text style={styles.moreDetails}>More</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
-      </ScrollView>
+            ))}
+          </View>
+        </ScrollView>
+      </View>
+      <BottomBar />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1, // Ensures the container takes up the full height
+    backgroundColor: "white",
+  },
+  scrollContainer: {
+    flex: 1, // Ensures the ScrollView takes up the available space
+  },
+  scrollView: {
     padding: 20,
-    backgroundColor:"white"
+  },
+  scrollText:{
+     paddingTop:10,
+     paddingLeft:17,
+     paddingRight: 20
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
   },
-  containerevent:{
-      backgroundColor:"white"
-  },
   searchContainer: {
     marginBottom: 8,
-    gap: 10,
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
@@ -146,7 +160,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   searchInput: {
-    width: 100,
+    flex: 1, // Allow input to take the available width
     paddingVertical: 7,
     color: "grey",
     fontSize: 16,
@@ -162,16 +176,16 @@ const styles = StyleSheet.create({
   eventCard: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between", // Added to push "More Details" to the far right
+    justifyContent: "space-between",
     borderWidth: 1,
     borderRadius: 8,
     padding: 10,
-    borderColor: "#fff", // White border
-    backgroundColor: "white", // Optional background color
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 5, // Increased shadow for better visibility
+    borderColor: "#fff",
+    backgroundColor: "white",
+    shadowColor: "blue",
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 3,
   },
   thumbnail: {
     width: 60,
@@ -180,8 +194,8 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   eventDetails: {
-    flex: 1, // Allows this to take the available space
-    marginRight: 10, // Adds a little space between event details and "More Details"
+    flex: 1,
+    marginRight: 10,
   },
   eventTitle: {
     margin: 0,
@@ -197,10 +211,9 @@ const styles = StyleSheet.create({
   locationContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 5, // Adds a little space between the title and location
+    marginTop: 5,
   },
   moreDetails: {
-    marginTop: 50,
     color: "blue",
     textDecorationLine: "none",
     fontWeight: "bold",
