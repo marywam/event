@@ -17,6 +17,8 @@ Before setting up the project, ensure you have the following installed on your m
        ![Screenshot from 2024-09-26 10-40-27](https://github.com/user-attachments/assets/e2218c91-994a-46cb-bfe4-761e4d4e27c4)
 
     (i)  Once you execute this command, you'll see output similar to the following, depending on your environment and whether you have Expo CLI installed:
+          ![Screenshot from 2024-09-26 10-47-50](https://github.com/user-attachments/assets/3c744d75-8db1-4d41-a271-c0c517185afa)
+
       
           ![Screenshot from 2024-09-26 10-47-50](https://github.com/user-attachments/assets/4cf6a210-0b1d-4c26-a676-01d86f90058c)
   
