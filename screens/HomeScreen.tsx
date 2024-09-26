@@ -218,6 +218,7 @@ const styles = StyleSheet.create({
     textDecorationLine: "none",
     fontWeight: "bold",
     fontSize: 12,
+    marginTop: 50,
   },
 });
 
