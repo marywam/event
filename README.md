@@ -12,6 +12,8 @@ Before setting up the project, ensure you have the following installed on your m
       ![Screenshot from 2024-09-26 10-17-03](https://github.com/user-attachments/assets/67efd41c-77c3-46fa-a5e4-33f8fa495b12)
 
 3.  Set up a new React Native project using the Expo  framework, providing you with a ready-to-use environment to start building your mobile application.
-   
+
+       ![Screenshot from 2024-09-26 10-33-21](https://github.com/user-attachments/assets/664c4b6e-6df1-4910-80c4-6050ea4c8a73)
+
 
 
