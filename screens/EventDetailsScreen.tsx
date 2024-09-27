@@ -12,9 +12,11 @@ import { RouteProp } from '@react-navigation/native';
 type RootStackParamList = {
   Home: undefined;
   EventDetails: undefined;  // Add this route to your param list
+  BookingForm: undefined;
 };
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+
 
 const EventDetails : React.FC = () =>{
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,6 +30,11 @@ const EventDetails : React.FC = () =>{
   const handleEvent = () => {
     navigation.navigate("EventDetails");
   };
+  // Handle navigation to EventDetails screen
+  const handleBooking = () => {
+    navigation.navigate("BookingForm");
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
 
@@ -121,8 +128,8 @@ const EventDetails : React.FC = () =>{
         </View>
 
         {/* Buy Ticket Button */}
-        <TouchableOpacity style={styles.buyButton}>
-          <Text style={styles.buyButtonText}>Buy Ticket</Text>
+        <TouchableOpacity onPress={handleBooking} style={styles.buyButton}>
+          <Text style={styles.buyButtonText}>Book Now</Text>
           <Icon
             name="heart-outline"
             size={20}
