@@ -11,11 +11,15 @@ import {
 import Icon from "react-native-vector-icons/Ionicons"; // Change to the icon set you're using
 import TopBar from "./TopBar";
 import BottomBar from "./BottomBar";
+import { useNavigation } from "@react-navigation/native";
 
 // Importing images separately
 const musicFestivalImage = require("../assets/event 1.jpeg");
 const artExhibitionImage = require("../assets/event 1.jpeg");
 const techConferenceImage = require("../assets/event 1.jpeg");
+
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 
 // Sample data for events
 const eventsData = [
@@ -63,13 +67,31 @@ const eventsData = [
   },
 ];
 
+
+type RootStackParamList = {
+  Home: undefined;
+  EventDetails: undefined;  // Add this route to your param list
+};
+
+type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+
+
 const Home: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
+  
+  const navigation = useNavigation<NavigationProp>(); // Get navigation from the hook
+
+  // Filter events based on search term
   const filteredEvents = eventsData.filter((event) =>
     event.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Handle navigation to EventDetails screen
+  const handleEvent = () => {
+    navigation.navigate("EventDetails");
+  };
+  
   return (
     <View style={styles.container}>
       <TopBar />
@@ -110,7 +132,7 @@ const Home: React.FC = () => {
                     <Text style={styles.eventLocation}>{event.location}</Text>
                   </View>
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity  onPress={handleEvent}>
                   <Text style={styles.moreDetails}>More</Text>
                 </TouchableOpacity>
               </View>
