@@ -36,6 +36,8 @@ Before setting up the project, ensure you have the following installed on your m
 
 # Structure of the code 
 The code is structured into the following components:
+
+
 ![Screenshot from 2024-09-28 15-40-40](https://github.com/user-attachments/assets/0372c7ab-a135-4e1c-92e2-62684f2b06b1)
 
 
