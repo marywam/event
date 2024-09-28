@@ -1,104 +1,127 @@
-import React , { useState }  from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons"; // For icons
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
 import { ScrollView } from "react-native-gesture-handler";
-
-import { Ionicons } from '@expo/vector-icons'; // If you're using Expo for icons
 import { useNavigation } from '@react-navigation/native';
-
+import axios from "axios";
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
+
+interface EventDetails {
+  id: number;
+  title: string;
+  date: string;
+  location: string;
+  price: string;
+  seatsAvailable: string;
+  about: string;
+  participants: string;
+  image: string;
+}
 
 type RootStackParamList = {
   Home: undefined;
-  EventDetails: undefined;  // Add this route to your param list
+  EventDetails: undefined;  
   BookingForm: undefined;
 };
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+const API_URL = 'http://192.168.1.11:3000/eventDetails'; // Use your local IP address
 
+const EventDetails: React.FC = () => {
+  const [eventDetail, setEventDetail] = useState<EventDetails | null>(null);
+  const [loading, setLoading] = useState(true); 
 
-const EventDetails : React.FC = () =>{
-  const [searchTerm, setSearchTerm] = useState("");
+  const navigation = useNavigation<NavigationProp>();
 
-  
-  const navigation = useNavigation<NavigationProp>(); // Get navigation from the hook
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const response = await axios.get(API_URL);
+        setEventDetail(response.data[0]); 
+      } catch (error) {
+        console.error("Error fetching event details:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  
+    fetchEvent();
+  }, []);
 
-  // Handle navigation to EventDetails screen
-  const handleEvent = () => {
-    navigation.navigate("EventDetails");
-  };
-  // Handle navigation to EventDetails screen
-  const handleBooking = () => {
-    navigation.navigate("BookingForm");
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text style={styles.loadingText}>Loading event details...</Text>
+      </View>
+    );
+  }
+
+  if (!eventDetail) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>No event details available.</Text>
+      </View>
+    );
+  }
+
+  const getLocalImage = (imageName: string) => {
+    switch (imageName) {
+      case "event1":
+        return require("../assets/event 1.jpeg"); // Replace with the correct image path
+      default:
+        return require("../assets/event 1.jpeg"); // Fallback image
+    }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-
-         {/* Back Icon Button */}
       <TouchableOpacity 
         style={styles.backButton}
-        onPress={() => navigation.navigate('Home')} // Direct to home page
+        onPress={() => navigation.navigate('Home')}
       >
-        <Ionicons name="arrow-back" size={24} color="white" />
+        <Icon name="arrow-back" size={24} color="white" />
       </TouchableOpacity>
-      {/* Event Image */}
       <View style={styles.imageContainer}>
         <Image
-          source={require("../assets/event 1.jpeg")} // Replace with your event image
+          source={getLocalImage(eventDetail.image)} 
           style={styles.eventImage}
         />
       </View>
 
-      {/* Event Details */}
       <View>
         <View style={styles.eventCard}>
-          {/* Event Title */}
-          <Text
-            style={styles.eventTitle}
-            numberOfLines={2}
-            ellipsizeMode="tail"
-          >
-            Comedy Gala Night at The Club
+          <Text style={styles.eventTitle} numberOfLines={2} ellipsizeMode="tail">
+            {eventDetail.title}
           </Text>
-
-          {/* Event Date and Location */}
           <View style={styles.metaRow}>
             <View style={styles.dateContainer}>
               <Icon name="calendar-outline" size={16} color="grey" />
-              <Text style={styles.metaText}>17 Mar 2023</Text>
+              <Text style={styles.metaText}>{eventDetail.date}</Text>
             </View>
             <View style={styles.locationContainer}>
               <Icon name="location-outline" size={16} color="grey" />
-              <Text style={styles.metaText}>California, USA</Text>
+              <Text style={styles.metaText}>{eventDetail.location}</Text>
             </View>
           </View>
-
-          {/* Price and Seats Available */}
           <View style={styles.priceRow}>
             <View style={styles.priceContainer}>
-              <Text style={styles.price}>$45</Text>
+              <Text style={styles.price}>{eventDetail.price}</Text>
             </View>
-            <Text style={styles.seatsAvailable}>256 seats available</Text>
+            <Text style={styles.seatsAvailable}>{eventDetail.seatsAvailable}</Text>
           </View>
         </View>
-        {/* Combined Sections in a Bordered Container */}
+
         <View style={styles.combinedSectionsContainer}>
-          {/* About Event Section */}
           <View style={styles.aboutContainer}>
             <Text style={styles.aboutHeader}>About Event</Text>
             <Text style={styles.aboutDescription}>
-              Planning an event can be a daunting task, especially when you have
+              {eventDetail.about}
               <Text style={styles.readMore}> read more</Text>
             </Text>
           </View>
-
-          {/* Participants Section */}
           <View style={styles.participantsContainer}>
-            <Image
+          <Image
               source={require("../assets/user 1.jpeg")}
               style={styles.participantImage}
             />
@@ -110,32 +133,20 @@ const EventDetails : React.FC = () =>{
               source={require("../assets/user 1.jpeg")}
               style={styles.participantImage}
             />
-            <View style={styles.participantsInfo}>
-              <Text style={styles.moreParticipants}>+2k</Text>
-              <Text style={styles.participantsText}>Participant</Text>
-            </View>
-            <Text style={styles.participantsLocation}>All over the world</Text>
+            <Text style={styles.participantsText}>{eventDetail.participants} participants</Text>
           </View>
-
-          {/* Location Section */}
           <Text style={styles.eventTitle}>Location</Text>
           <View style={styles.locationMapContainer}>
-            <Image
+          <Image
               source={require("../assets/map.jpeg")} // Replace with your map image
               style={styles.mapImage}
             />
           </View>
         </View>
 
-        {/* Buy Ticket Button */}
-        <TouchableOpacity onPress={handleBooking} style={styles.buyButton}>
+        <TouchableOpacity onPress={() => navigation.navigate("BookingForm")} style={styles.buyButton}>
           <Text style={styles.buyButtonText}>Book Now</Text>
-          <Icon
-            name="heart-outline"
-            size={20}
-            color="#fff"
-            style={styles.heartIcon}
-          />
+          <Icon name="heart-outline" size={20} color="#fff" style={styles.heartIcon} />
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -150,33 +161,32 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     borderRadius: 20,
-    overflow: "hidden", // Ensures the image corners are curved
+    overflow: "hidden", 
     marginBottom: 10,
   },
   eventImage: {
     width: "100%",
     height: 400,
     marginTop: 5,
-    borderRadius: 20, // Curved corners for the image
+    borderRadius: 20,
   },
   backButton: {
     position: 'absolute',
-    top: 40, // Adjust based on your needs
-    left: 20, // Adjust based on your needs
+    top: 40,
+    left: 20,
     zIndex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Optional: add a background for better visibility
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
     padding: 10,
     borderRadius: 20,
   },
   combinedSectionsContainer: {
-    borderColor:"#F0F0F5", // Light gray border color
-    backgroundColor:"white",
-    borderWidth: 1, // Width of the border
-    borderRadius: 10, // Rounded corners
-    padding: 10, // Padding inside the bordered area
-    marginVertical: 10, // Vertical margin for spacing
+    borderColor: "#F0F0F5", 
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
+    marginVertical: 10,
   },
-
   eventCard: {
     backgroundColor: "#fff",
     borderRadius: 16,
@@ -186,54 +196,46 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 10,
-    elevation: 4, // For Android shadow
+    elevation: 4, 
     borderColor: "#F0F0F5",
     borderWidth: 1,
   },
-
-  // Title styling
   eventTitle: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#1F1F1F",
-    marginBottom: 8, // Adds space below the title before the date/location
+    marginBottom: 8,
   },
-
-  // Row for event date and location
   metaRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 12, // Space between date/location and price/seats
+    marginBottom: 12,
   },
-
-  // Date container styling
   dateContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
-
-  // Location container styling
   locationContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
-
-  // Meta text (date and location) styling
+  participantImage: {
+    width: 30,
+    height: 30,
+    borderRadius: 20,
+    marginRight: 0.1,
+  },
   metaText: {
     fontSize: 14,
     color: "grey",
     marginLeft: 5,
   },
-
-  // Row for price and seat availability (moved below metaRow)
   priceRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-
-  // Price container styling
   priceContainer: {
     backgroundColor: "#F4F1F9",
     padding: 8,
@@ -241,20 +243,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 60,
   },
-
-  // Price text styling
   price: {
     fontSize: 20,
     color: "orange",
     fontWeight: "bold",
   },
-
-  // Seats available text styling
   seatsAvailable: {
     fontSize: 14,
     color: "grey",
   },
-
   aboutContainer: {
     marginVertical: 10,
   },
@@ -274,28 +271,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 8,
   },
-  participantImage: {
-    width: 30,
-    height: 30,
-    borderRadius: 20,
-    marginRight: 0.1,
-  },
-  participantsInfo: {
-    flexDirection: "row", // Align items horizontally
-    alignItems: "center", // Vertically center the text
-  },
-  moreParticipants: {
-    fontSize: 16,
-    color: "#e91e63",
-    marginRight: 2,
-  },
   participantsText: {
     fontSize: 14,
     fontWeight: "bold",
-    marginRight: 8,
-  },
-  participantsLocation: {
-    color: "grey",
   },
   locationMapContainer: {
     marginVertical: 10,
@@ -316,12 +294,21 @@ const styles = StyleSheet.create({
   },
   buyButtonText: {
     color: "#fff",
-    fontSize: 16,
     fontWeight: "bold",
     marginRight: 10,
   },
   heartIcon: {
-    marginLeft: 5,
+    marginLeft: 10,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: {
+    fontSize: 16,
+    color: "grey",
+    marginTop: 10,
   },
 });
 

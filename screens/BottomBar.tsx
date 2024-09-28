@@ -18,7 +18,7 @@ const BottomBar = () => {
 
   return (
     <LinearGradient
-      colors={['white', 'orange', 'white']} // Green to a mixture of blue
+      colors={['orange', 'orange', 'white']} // Green to a mixture of blue
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
       style={homeStyles.bottombar}>

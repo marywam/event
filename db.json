@@ -1,47 +1,60 @@
 {
-    "events": [
-      {
-        "id": 1,
-        "date": "17th March, 2023",
-        "title": "Summer Music Festival",
-        "location": "New York",
-        "image": "event 1" 
-      },
-      {
-        "id": 2,
-        "date": "1st Oct, 2024",
-        "title": "Art Exhibition",
-        "location": "San Francisco",
-        "image": "event 1"  
-      },
-      {
-        "id": 3,
-        "date": "20th Dec, 2024",
-        "title": "Tech Conference Summit",
-        "location": "Seattle",
-        "image": "event 1"  
-      },
-      {
-        "id": 4,
-        "date": "20th Dec, 2024",
-        "title": "Tech Conference Summit",
-        "location": "Seattle",
-       " image": "event 1"
-      },
-      {
-        "id": 5,
-        "date": "20th Dec, 2024",
-        "title": "Tech Conference Summit",
-        "location": "Seattle",
-        "image": "event 1"
-      },
-      {
-        "id": 6,
-        "date": "20th Dec, 2024",
-        "title": "Tech Conference Summit",
-        "location": "Seattle",
-        "image": "event 1"
-      }
-    ]
-  }
-  
+  "events": [
+    {
+      "id": 1,
+      "date": "17th March, 2023",
+      "title": "Summer Music Festival",
+      "location": "New York",
+      "image": "event1"
+    },
+    {
+      "id": 2,
+      "date": "1st Oct, 2024",
+      "title": "Art Exhibition",
+      "location": "San Francisco",
+      "image": "event1"
+    },
+    {
+      "id": 3,
+      "date": "20th Dec, 2024",
+      "title": "Tech Conference Summit",
+      "location": "Seattle",
+      "image": "event1"
+    },
+    {
+      "id": 4,
+      "date": "15th Nov, 2024",
+      "title": "Innovators' Summit",
+      "location": "Chicago",
+      "image": "event1"
+    },
+    {
+      "id": 5,
+      "date": "25th Jan, 2025",
+      "title": "Health & Wellness Expo",
+      "location": "Los Angeles",
+      "image": "event1"
+    },
+    {
+      "id": 6,
+      "date": "20th Feb, 2025",
+      "title": "Virtual Reality Expo",
+      "location": "San Francisco",
+      "image": "event1"
+    }
+  ],
+  "eventDetails": [
+    {
+      "id": 1,
+      "title": "Comedy Gala Night at The Club",
+      "date": "17 Mar 2023",
+      "location": "California, USA",
+      "price": "$45",
+      "seatsAvailable": "256 seats available",
+      "about": "Planning an event can be a daunting task, especially when you have...",
+      "participants": "2k",
+      "image": "event 1"
+    }
+    
+  ]
+}
