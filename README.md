@@ -22,14 +22,21 @@ Before setting up the project, ensure you have the following installed on your m
 
 
 4. Navigate to the app
-        
-        
+      cd event         
        
 5. Start the Expo development server:
 
    (i) After the installation is complete, run the following command to start the development server:
     
-        
+        npm start
+
+# Additional Features
+
+1. I included the Bottom bar and the Top Bar which comprimises of the profile and location for the top bar and the Bottom bar includes the navigations to different parts on the Mobile App
+
+# Structure of the code 
+The code is structured into the following components:
+
        
       
          
