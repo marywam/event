@@ -1,0 +1,47 @@
+{
+    "events": [
+      {
+        "id": 1,
+        "date": "17th March, 2023",
+        "title": "Summer Music Festival",
+        "location": "New York",
+        "image": "event 1" 
+      },
+      {
+        "id": 2,
+        "date": "1st Oct, 2024",
+        "title": "Art Exhibition",
+        "location": "San Francisco",
+        "image": "event 1"  
+      },
+      {
+        "id": 3,
+        "date": "20th Dec, 2024",
+        "title": "Tech Conference Summit",
+        "location": "Seattle",
+        "image": "event 1"  
+      },
+      {
+        "id": 4,
+        "date": "20th Dec, 2024",
+        "title": "Tech Conference Summit",
+        "location": "Seattle",
+       " image": "event 1"
+      },
+      {
+        "id": 5,
+        "date": "20th Dec, 2024",
+        "title": "Tech Conference Summit",
+        "location": "Seattle",
+        "image": "event 1"
+      },
+      {
+        "id": 6,
+        "date": "20th Dec, 2024",
+        "title": "Tech Conference Summit",
+        "location": "Seattle",
+        "image": "event 1"
+      }
+    ]
+  }
+  

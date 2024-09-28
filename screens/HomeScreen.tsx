@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,103 +7,115 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons"; // Change to the icon set you're using
 import TopBar from "./TopBar";
 import BottomBar from "./BottomBar";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 
 // Importing images separately
 const musicFestivalImage = require("../assets/event 1.jpeg");
 const artExhibitionImage = require("../assets/event 1.jpeg");
 const techConferenceImage = require("../assets/event 1.jpeg");
 
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RouteProp } from "@react-navigation/native";
 
-// Sample data for events
-const eventsData = [
-  {
-    id: 1,
-    date: "17th March, 2023",
-    title: "Summer Music Festival",
-    location: "New York",
-    image: musicFestivalImage,
-  },
-  {
-    id: 2,
-    date: "1st Oct, 2024",
-    title: "Art Exhibition",
-    location: "San Francisco",
-    image: artExhibitionImage,
-  },
-  {
-    id: 3,
-    date: "20th Dec, 2024",
-    title: "Tech Conference Summit",
-    location: "Seattle",
-    image: techConferenceImage,
-  },
-  {
-    id: 4,
-    date: "20th Dec, 2024",
-    title: "Tech Conference Summit",
-    location: "Seattle",
-    image: techConferenceImage,
-  },
-  {
-    id: 5,
-    date: "20th Dec, 2024",
-    title: "Tech Conference Summit",
-    location: "Seattle",
-    image: techConferenceImage,
-  },
-  {
-    id: 6,
-    date: "20th Dec, 2024",
-    title: "Tech Conference Summit",
-    location: "Seattle",
-    image: techConferenceImage,
-  },
-];
-
+interface Event {
+  id: number;
+  date: string;
+  title: string;
+  location: string;
+  image: string;
+}
 
 type RootStackParamList = {
   Home: undefined;
-  EventDetails: undefined;  // Add this route to your param list
+  EventDetails: undefined; // Add this route to your param list
 };
 
-type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+type NavigationProp = StackNavigationProp<RootStackParamList, "Home">;
+const API_URL = 'http://192.168.1.11:3000/events'; // Use your local IP address
 
 
 const Home: React.FC = () => {
+  const [eventsData, setEventsData] = useState<Event[]>([]); // Now it knows 'eventsData' is an array of 'Event' objects
+
+  const [loading, setLoading] = useState(true); // Loading state
   const [searchTerm, setSearchTerm] = useState("");
 
-  
   const navigation = useNavigation<NavigationProp>(); // Get navigation from the hook
 
+  // Function to get the local image
+  const getLocalImage = (imageName: string) => {
+    switch (imageName) {
+      case "event1":
+        return require("../assets/event 1.jpeg"); // Local image path
+      case "event 1":
+        return require("../assets/event 1.jpeg"); // Local image path
+      case "event 1":
+        return require("../assets/event 1.jpeg"); // Local image path
+      case "event 1":
+        return require("../assets/event 1.jpeg"); // Local image path
+      case "event 1":
+        return require("../assets/event 1.jpeg"); // Local image path
+      case "event 1":
+        return require("../assets/event 1.jpeg"); // Local image path
+
+      default:
+        return require("../assets/event 1.jpeg"); // Fallback image
+    }
+  };
+
+  // Fetch events from local API
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get(API_URL);
+        setEventsData(response.data); // Set the events data from API response
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      } finally {
+        setLoading(false); // Stop loading once data is fetched
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
   // Filter events based on search term
-  const filteredEvents = eventsData.filter((event) =>
+  const filteredEvents = eventsData.filter((event: any) =>
     event.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text style={styles.loadingText}>Loading events...</Text>
+      </View>
+    );
+}
+
 
   // Handle navigation to EventDetails screen
   const handleEvent = () => {
     navigation.navigate("EventDetails");
   };
-  
+
   return (
     <View style={styles.container}>
       <TopBar />
       <View style={styles.scrollContainer}>
-
-        <View  style={styles.scrollText}>
-        <Text style={styles.title}>Upcoming Events</Text>
+        <View style={styles.scrollText}>
+          <Text style={styles.title}>Upcoming Events</Text>
           <View style={styles.searchContainer}>
             <Icon
               name="search-outline"
               size={25}
-              style={[styles.searchIcon, { color: 'grey' }]}
+              style={[styles.searchIcon, { color: "grey" }]}
             />
             <TextInput
               placeholder="Search events..."
@@ -115,12 +127,11 @@ const Home: React.FC = () => {
           </View>
         </View>
         <ScrollView contentContainerStyle={styles.scrollView}>
-         
           <View style={styles.eventList}>
             {filteredEvents.map((event) => (
               <View key={event.id} style={styles.eventCard}>
                 <Image
-                  source={event.image}
+                  source={getLocalImage(event.image)}
                   style={styles.thumbnail}
                   accessibilityLabel={event.title}
                 />
@@ -132,7 +143,7 @@ const Home: React.FC = () => {
                     <Text style={styles.eventLocation}>{event.location}</Text>
                   </View>
                 </View>
-                <TouchableOpacity  onPress={handleEvent}>
+                <TouchableOpacity onPress={handleEvent}>
                   <Text style={styles.moreDetails}>More</Text>
                 </TouchableOpacity>
               </View>
@@ -156,10 +167,10 @@ const styles = StyleSheet.create({
   scrollView: {
     padding: 20,
   },
-  scrollText:{
-     paddingTop:10,
-     paddingLeft:17,
-     paddingRight: 20
+  scrollText: {
+    paddingTop: 10,
+    paddingLeft: 17,
+    paddingRight: 20,
   },
   title: {
     fontSize: 24,
@@ -242,6 +253,18 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 50,
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+},
+loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: 'grey',
+},
+
 });
 
 export default Home;
